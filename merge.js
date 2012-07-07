@@ -15,7 +15,7 @@ exports.mergeTo = function(f1, f2) {
     if (stats.isDirectory()) {
       _results.push(merge("" + f1 + "/" + file, "" + f2 + "/" + file));
     } else {
-      if (!path.existsSync("" + f2 + "/" + file)) {
+      if (!fs.existsSync("" + f2 + "/" + file)) {
         fs.mkdirSync(("" + f2 + "/" + file).split("/").slice(0, -1).join("/"), 0x1ed, true);
         fs.writeFileSync("" + f2 + "/" + file, fs.readFileSync("" + f1 + "/" + file));
         _results.push(console.log("Merged " + f2 + "/" + file + "."));
