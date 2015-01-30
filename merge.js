@@ -2,7 +2,9 @@
 var fs      = require("node-fs"),
     extend  = require('node.extend');
 
-var defaultOptions  = {};
+var defaultOptions  = {
+  recursive: true // whether to merge recursively
+};
 
 var mergeTo = function(f1, f2, options) {
   options = extend({}, defaultOptions, options);
@@ -14,7 +16,12 @@ var mergeTo = function(f1, f2, options) {
     file = files[_i];
     stats = fs.lstatSync("" + f1 + "/" + file);
     if (stats.isDirectory()) {
-      _results.push(mergeTo("" + f1 + "/" + file, "" + f2 + "/" + file));
+      if(options.recursive){
+        _results.push(mergeTo("" + f1 + "/" + file, "" + f2 + "/" + file));
+      }else{
+        // not recursive
+        _results.push(console.log('Skipping directory ' + f2 + '/' + file));
+      }
     } else {
       if (!fs.existsSync("" + f2 + "/" + file)) {
         fs.mkdirSync(("" + f2 + "/" + file).split("/").slice(0, -1).join("/"), 0x1ed, true);
