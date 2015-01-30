@@ -18,28 +18,28 @@ var mergeTo = function(f1, f2, options) {
   // loop through and copy the files
   for (_i = 0, _len = files.length; _i < _len; _i++) {
     file = files[_i];
-    stats = fs.lstatSync("" + f1 + "/" + file);
+    stats = fs.lstatSync(f1 + "/" + file);
 
     if (stats.isDirectory()) {
       // file is a directory
 
       if(options.recursive){
         // recursive - merge the directory
-        _results.push(mergeTo("" + f1 + "/" + file, "" + f2 + "/" + file, options));
+        _results.push(mergeTo(f1 + "/" + file, f2 + "/" + file, options));
       }else{
         // not recursive - skip the directory
         _results.push(console.log('Skipping directory ' + f2 + '/' + file));
       }
     } else {
       // normal file
-      if (options.overwrite || !fs.existsSync("" + f2 + "/" + file)) {
+      if (options.overwrite || !fs.existsSync(f2 + "/" + file)) {
         // file doesn't exist or we can overwrite
-        fs.mkdirSync(("" + f2 + "/" + file).split("/").slice(0, -1).join("/"), 0x1ed, true);
-        fs.writeFileSync("" + f2 + "/" + file, fs.readFileSync("" + f1 + "/" + file));
-        _results.push(console.log("Merged " + f2 + "/" + file + "."));
+        fs.mkdirSync((f2 + "/" + file).split("/").slice(0, -1).join("/"), 0x1ed, true);
+        fs.writeFileSync(f2 + "/" + file, fs.readFileSync("" + f1 + "/" + file));
+        _results.push(console.log("Merged " + f2 + "/" + file));
       } else {
         // file already exists
-        _results.push(console.log("Cannot merge " + f2 + "/" + file + ". File exists."));
+        _results.push(console.log("File exists " + f2 + "/" + file));
       }
     }
   }
