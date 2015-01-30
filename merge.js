@@ -3,7 +3,8 @@ var fs      = require("node-fs"),
     extend  = require('node.extend');
 
 var defaultOptions  = {
-  recursive: true // whether to merge recursively
+  recursive: true,  // whether to merge recursively
+  overwrite: false  // whether to overwrite existing files
 };
 
 var mergeTo = function(f1, f2, options) {
@@ -31,8 +32,8 @@ var mergeTo = function(f1, f2, options) {
       }
     } else {
       // normal file
-      if (!fs.existsSync("" + f2 + "/" + file)) {
-        // file doesn't exist
+      if (options.overwrite || !fs.existsSync("" + f2 + "/" + file)) {
+        // file doesn't exist or we can overwrite
         fs.mkdirSync(("" + f2 + "/" + file).split("/").slice(0, -1).join("/"), 0x1ed, true);
         fs.writeFileSync("" + f2 + "/" + file, fs.readFileSync("" + f1 + "/" + file));
         _results.push(console.log("Merged " + f2 + "/" + file + "."));
