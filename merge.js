@@ -24,7 +24,7 @@ var mergeTo = function(f1, f2, options) {
 
       if(options.recursive){
         // recursive - merge the directory
-        _results.push(mergeTo("" + f1 + "/" + file, "" + f2 + "/" + file));
+        _results.push(mergeTo("" + f1 + "/" + file, "" + f2 + "/" + file, options));
       }else{
         // not recursive - skip the directory
         _results.push(console.log('Skipping directory ' + f2 + '/' + file));
